@@ -10,7 +10,14 @@ class MarkitdownGui < Formula
   depends_on "ffmpeg"
 
   def install
-    virtualenv_install_with_resources
+    # 1. Create the private 'bubble'
+    virtualenv_create(libexec, "python3.12")
+    
+    # 2. Install dependencies directly into the bubble
+    system libexec/"bin/pip", "install", "customtkinter", "markitdown[all]"
+    
+    # 3. Link your GUI code into the bubble and create the /usr/local/bin shortcut
+    virtualenv_install
   end
 
   test do
